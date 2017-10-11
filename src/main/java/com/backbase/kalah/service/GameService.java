@@ -143,16 +143,16 @@ public class GameService {
    */
   private Integer checkAndProcessIfGameIsOver(final Integer currentPlayerId) {
     LOGGER.info("==== START checkAndProcessIfGameIsOver ====");
-    boolean ownPitFlag = validateIfPitsAreEmpty(getCurrentPlayer(currentPlayerId));
-    boolean otherPitFlag = validateIfPitsAreEmpty(getOtherPlayer(currentPlayerId));
-    if (ownPitFlag) {
+    boolean ownPitEmptyFlag = validateIfPitsAreEmpty(getCurrentPlayer(currentPlayerId));
+    boolean otherPitEmptyFlag = validateIfPitsAreEmpty(getOtherPlayer(currentPlayerId));
+    if (ownPitEmptyFlag) {
       Integer totalRemainingStones = emptyAndGetRemainingStonesFromOppositePits(
           getOtherPlayer(currentPlayerId));
       addStonesToPlayersKalah(totalRemainingStones, getOtherPlayer(currentPlayerId));
       return SuccessCodeEnum.SUCCESS_WINNER.getCode();
-    } else if (otherPitFlag) {
+    } else if (otherPitEmptyFlag) {
       Integer totalRemainingStones = emptyAndGetRemainingStonesFromOppositePits(
-          getOtherPlayer(currentPlayerId));
+          getCurrentPlayer(currentPlayerId));
       addStonesToPlayersKalah(totalRemainingStones, getCurrentPlayer(currentPlayerId));
       return SuccessCodeEnum.SUCCESS_WINNER.getCode();
     }
