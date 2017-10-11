@@ -43,17 +43,14 @@
       contentType: "application/json; charset=utf-8",
       dataType: "json",
       success: function (data, status) {
-        console.log(data.board);
-        console.log(data.playerId);
         if (data.status) {
-          var lastId = data.board.length - 1;
           $.each(data.board, function (index, value) {
             $("#pit_" + index).html(value);
           });
           showCurrentPlayer(data.playerId);
-          alert(data.message);
+          $("#message").html(data.message);
         } else {
-          alert(data.message);
+          $("#message").html(data.message);
         }
       }
     })
@@ -103,14 +100,12 @@
 
     }
 
-
     span {
-        width:100%;
+        width: 100%;
         display: block;
         text-align: center;
         font-size: 300%;
     }
-
 
     #kalah-board {
         position: absolute;
@@ -131,9 +126,11 @@
     <form action="/api/restart" method="get">
         <input type="submit" value="RESTART GAME"/>
     </form>
+    <br/>
+    <div><span id="message" class="text">First move, Player ${currentPlayer}</span></div>
     <table border="1">
-
         <input type="hidden" value="${currentPlayer}" id="currentPlayer"/>
+
         <tr>
             <td class="">
                 <div class="content points">

@@ -1,6 +1,5 @@
-package com.backbase.kalah.dto;
+package com.backbase.kalah.models;
 
-import com.backbase.kalah.utils.KalahObjects;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -9,14 +8,14 @@ import java.util.Map;
 /**
  * Created by jpv on 11/10/2017.
  */
-public class KalahPlayerDTO {
+public class KalahPlayerModel {
 
   private int id;
   private List<Integer> allowedPits;
   private Map<Integer, Integer> oppositePits;
   private int kalah;
 
-  public KalahPlayerDTO (int id) {
+  public KalahPlayerModel(int id) {
     if (1 == id) {
       this.allowedPits = Arrays.asList(0, 1, 2, 3, 4, 5);
       this.kalah = 6;

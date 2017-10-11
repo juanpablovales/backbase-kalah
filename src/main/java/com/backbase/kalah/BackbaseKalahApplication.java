@@ -13,12 +13,12 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan("com.backbase")
 public class BackbaseKalahApplication extends SpringBootServletInitializer {
 
-	@Override
-	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		return application.sources(BackbaseKalahApplication.class);
-	}
+  @Override
+  protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+    return application.sources(BackbaseKalahApplication.class);
+  }
 
-	public static void main(String[] args) {
-		SpringApplication.run(BackbaseKalahApplication.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(BackbaseKalahApplication.class, args);
+  }
 }

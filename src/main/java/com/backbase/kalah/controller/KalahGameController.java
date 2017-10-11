@@ -1,56 +1,68 @@
 package com.backbase.kalah.controller;
 
-import com.backbase.kalah.dto.KalahBoard;
-import com.backbase.kalah.dto.KalahPlayerDTO;
 import com.backbase.kalah.dto.KalahRequestDTO;
 import com.backbase.kalah.dto.KalahResponseDTO;
+import com.backbase.kalah.models.KalahBoardModel;
+import com.backbase.kalah.models.KalahPlayerModel;
 import com.backbase.kalah.service.GameService;
-import com.backbase.kalah.utils.KalahObjects;
+import com.backbase.kalah.utils.KalahConstants;
 import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * Created by jpv on 10/10/2017.
  */
 @Controller
+@RequestMapping("/api")
 public class KalahGameController {
 
   @Autowired
   private GameService gameService;
 
-  @RequestMapping(value = "/api/restart", method = RequestMethod.GET)
-  public String restart(final HttpServletRequest request,
-      Map<String, Object> model) {
-    gameService.restart();
-    model.put("board", new KalahBoard().getBoard());
-    model.put("currentPlayer", KalahObjects.PLAYER_ONE);
-    model.put("playerOne", new KalahPlayerDTO(1));
-    model.put("playerTwo", new KalahPlayerDTO(2));
+  /**
+   * API for restarting the game
+   * @param model
+   * @return
+   */
+  @GetMapping(value = "/restart")
+  public String doRestartGame(Map<String, Object> model) {
+    gameService.restartGame();
+    model.put("board", new KalahBoardModel().getBoard());
+    model.put("currentPlayer", KalahConstants.PLAYER_ONE);
+    model.put("playerOne", new KalahPlayerModel(1));
+    model.put("playerTwo", new KalahPlayerModel(2));
     return "game";
   }
 
-  @RequestMapping(value = "/api/move", method = RequestMethod.POST)
-  public ResponseEntity move(final HttpServletRequest request,
-      @RequestBody KalahRequestDTO body) {
-    KalahResponseDTO responseDTO = gameService.move(body);
+  /**
+   * API for moving stones from selected pit.
+   * @param body
+   * @return
+   */
+  @PostMapping(value = "/move")
+  public ResponseEntity doMoveStones(@RequestBody KalahRequestDTO body) {
+    KalahResponseDTO responseDTO = gameService.makeMove(body);
     return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
   }
 
-
-  @RequestMapping(value = "/api", method = RequestMethod.GET)
-  public String game(final HttpServletRequest request,
-      Map<String, Object> model) {
-    model.put("board", new KalahBoard().getBoard());
-    model.put("currentPlayer", KalahObjects.PLAYER_ONE);
-    model.put("playerOne", new KalahPlayerDTO(1));
-    model.put("playerTwo", new KalahPlayerDTO(2));
+  /**
+   * API for starting the game.
+   * @param model
+   * @return
+   */
+  @GetMapping
+  public String doStartGame(Map<String, Object> model) {
+    model.put("board", new KalahBoardModel().getBoard());
+    model.put("currentPlayer", KalahConstants.PLAYER_ONE);
+    model.put("playerOne", new KalahPlayerModel(1));
+    model.put("playerTwo", new KalahPlayerModel(2));
 
     return "game";
   }
