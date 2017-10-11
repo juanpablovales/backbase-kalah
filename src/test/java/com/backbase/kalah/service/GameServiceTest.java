@@ -1,6 +1,6 @@
 package com.backbase.kalah.service;
 
-import com.backbase.kalah.models.KalahBoardModel;
+import com.backbase.kalah.models.KalahBoard;
 import com.backbase.kalah.dto.KalahRequestDTO;
 import com.backbase.kalah.dto.KalahResponseDTO;
 import com.backbase.kalah.exception.EmptyPitException;
@@ -25,7 +25,7 @@ public class GameServiceTest {
   @Test
   public void testValidMoveForPlayerOne() {
     GameService.KALAH_BOARD =
-        new KalahBoardModel(new Integer[]{6, 6, 6, 6, 6, 6, 0, 6, 6, 6, 6, 6, 6, 0},
+        new KalahBoard(new Integer[]{6, 6, 6, 6, 6, 6, 0, 6, 6, 6, 6, 6, 6, 0},
             KalahConstants.PLAYER_ONE);
     KalahRequestDTO requestDTO = new KalahRequestDTO();
     requestDTO.setPitIndex(0);
@@ -38,7 +38,7 @@ public class GameServiceTest {
   @Test
   public void testValidMoveForPlayerTwo() {
     GameService.KALAH_BOARD =
-        new KalahBoardModel(new Integer[]{0, 7, 7, 7, 7, 7, 1, 6, 6, 6, 6, 6, 6, 0},
+        new KalahBoard(new Integer[]{0, 7, 7, 7, 7, 7, 1, 6, 6, 6, 6, 6, 6, 0},
             KalahConstants.PLAYER_TWO);
     KalahRequestDTO requestDTO = new KalahRequestDTO();
     requestDTO.setPitIndex(7);
@@ -51,7 +51,7 @@ public class GameServiceTest {
   @Test
   public void testValidMoveForPlayerOne_lastStoneOnEmptyPit() {
     GameService.KALAH_BOARD =
-        new KalahBoardModel(new Integer[]{2, 1, 0, 10, 10, 3, 4, 0, 11, 10, 9, 9, 1, 2},
+        new KalahBoard(new Integer[]{2, 1, 0, 10, 10, 3, 4, 0, 11, 10, 9, 9, 1, 2},
             KalahConstants.PLAYER_ONE);
     KalahRequestDTO requestDTO = new KalahRequestDTO();
     requestDTO.setPitIndex(1);
@@ -65,7 +65,7 @@ public class GameServiceTest {
   @Test
   public void testValidMoveForPlayerTwo_lastStoneOnEmptyPit() {
     GameService.KALAH_BOARD =
-        new KalahBoardModel(new Integer[]{0, 10, 9, 0, 8, 0, 3, 1, 0, 11, 10, 9, 9, 2},
+        new KalahBoard(new Integer[]{0, 10, 9, 0, 8, 0, 3, 1, 0, 11, 10, 9, 9, 2},
             KalahConstants.PLAYER_TWO);
     KalahRequestDTO requestDTO = new KalahRequestDTO();
     requestDTO.setPitIndex(7);
@@ -78,7 +78,7 @@ public class GameServiceTest {
   @Test
   public void testValidMove_gameOver() {
     GameService.KALAH_BOARD =
-        new KalahBoardModel(new Integer[]{0, 0, 0, 0, 0, 1, 11, 10, 10, 5, 5, 10, 10, 10},
+        new KalahBoard(new Integer[]{0, 0, 0, 0, 0, 1, 11, 10, 10, 5, 5, 10, 10, 10},
             KalahConstants.PLAYER_ONE);
     GameService.KALAH_BOARD.setPlayerId(KalahConstants.PLAYER_ONE);
     KalahRequestDTO requestDTO = new KalahRequestDTO();
@@ -94,7 +94,7 @@ public class GameServiceTest {
   @Test
   public void testValidMovePlayerOne_gameOver_oppositeEmptyPit() {
     GameService.KALAH_BOARD =
-        new KalahBoardModel(new Integer[]{10, 1, 0, 0, 0, 0, 33, 0, 0, 0, 1, 0, 0, 27},
+        new KalahBoard(new Integer[]{10, 1, 0, 0, 0, 0, 33, 0, 0, 0, 1, 0, 0, 27},
             KalahConstants.PLAYER_ONE);
     GameService.KALAH_BOARD.setPlayerId(KalahConstants.PLAYER_ONE);
     KalahRequestDTO requestDTO = new KalahRequestDTO();
@@ -109,7 +109,7 @@ public class GameServiceTest {
   @Test(expected = WrongPitException.class)
   public void testInvalidMove_wrongPit() {
     GameService.KALAH_BOARD =
-        new KalahBoardModel(new Integer[]{10, 1, 0, 0, 0, 0, 33, 0, 0, 0, 1, 0, 0, 27},
+        new KalahBoard(new Integer[]{10, 1, 0, 0, 0, 0, 33, 0, 0, 0, 1, 0, 0, 27},
             KalahConstants.PLAYER_ONE);
     GameService.KALAH_BOARD.setPlayerId(KalahConstants.PLAYER_ONE);
     KalahRequestDTO requestDTO = new KalahRequestDTO();
@@ -121,7 +121,7 @@ public class GameServiceTest {
   @Test(expected = EmptyPitException.class)
   public void testInvalidMove_emptyPit() {
     GameService.KALAH_BOARD =
-        new KalahBoardModel(new Integer[]{10, 1, 0, 0, 0, 0, 33, 0, 0, 0, 1, 0, 0, 27},
+        new KalahBoard(new Integer[]{10, 1, 0, 0, 0, 0, 33, 0, 0, 0, 1, 0, 0, 27},
             KalahConstants.PLAYER_ONE);
     GameService.KALAH_BOARD.setPlayerId(KalahConstants.PLAYER_ONE);
     KalahRequestDTO requestDTO = new KalahRequestDTO();
@@ -133,7 +133,7 @@ public class GameServiceTest {
   @Test(expected = InvalidPlayerTurnException.class)
   public void testInvalidMove_invalidPlayerTurnt() {
     GameService.KALAH_BOARD =
-        new KalahBoardModel(new Integer[]{10, 1, 0, 0, 0, 0, 33, 0, 0, 0, 1, 0, 0, 27},
+        new KalahBoard(new Integer[]{10, 1, 0, 0, 0, 0, 33, 0, 0, 0, 1, 0, 0, 27},
             KalahConstants.PLAYER_ONE);
     GameService.KALAH_BOARD.setPlayerId(KalahConstants.PLAYER_ONE);
     KalahRequestDTO requestDTO = new KalahRequestDTO();

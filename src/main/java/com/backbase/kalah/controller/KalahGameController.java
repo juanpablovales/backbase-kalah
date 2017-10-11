@@ -2,8 +2,8 @@ package com.backbase.kalah.controller;
 
 import com.backbase.kalah.dto.KalahRequestDTO;
 import com.backbase.kalah.dto.KalahResponseDTO;
-import com.backbase.kalah.models.KalahBoardModel;
-import com.backbase.kalah.models.KalahPlayerModel;
+import com.backbase.kalah.models.KalahBoard;
+import com.backbase.kalah.models.KalahPlayer;
 import com.backbase.kalah.service.GameService;
 import com.backbase.kalah.utils.KalahConstants;
 import java.util.Map;
@@ -34,10 +34,10 @@ public class KalahGameController {
   @GetMapping(value = "/restart")
   public String doRestartGame(Map<String, Object> model) {
     gameService.restartGame();
-    model.put("board", new KalahBoardModel().getBoard());
+    model.put("board", new KalahBoard().getBoard());
     model.put("currentPlayer", KalahConstants.PLAYER_ONE);
-    model.put("playerOne", new KalahPlayerModel(1));
-    model.put("playerTwo", new KalahPlayerModel(2));
+    model.put("playerOne", new KalahPlayer(1));
+    model.put("playerTwo", new KalahPlayer(2));
     return "game";
   }
 
@@ -59,10 +59,10 @@ public class KalahGameController {
    */
   @GetMapping
   public String doStartGame(Map<String, Object> model) {
-    model.put("board", new KalahBoardModel().getBoard());
+    model.put("board", new KalahBoard().getBoard());
     model.put("currentPlayer", KalahConstants.PLAYER_ONE);
-    model.put("playerOne", new KalahPlayerModel(1));
-    model.put("playerTwo", new KalahPlayerModel(2));
+    model.put("playerOne", new KalahPlayer(1));
+    model.put("playerTwo", new KalahPlayer(2));
 
     return "game";
   }

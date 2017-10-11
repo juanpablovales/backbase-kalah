@@ -8,14 +8,14 @@ import java.util.Map;
 /**
  * Created by jpv on 11/10/2017.
  */
-public class KalahPlayerModel {
+public class KalahPlayer {
 
   private int id;
   private List<Integer> allowedPits;
   private Map<Integer, Integer> oppositePits;
   private int kalah;
 
-  public KalahPlayerModel(int id) {
+  public KalahPlayer(int id) {
     if (1 == id) {
       this.allowedPits = Arrays.asList(0, 1, 2, 3, 4, 5);
       this.kalah = 6;

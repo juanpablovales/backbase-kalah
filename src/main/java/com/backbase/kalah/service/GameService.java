@@ -3,8 +3,8 @@ package com.backbase.kalah.service;
 import com.backbase.kalah.dto.KalahRequestDTO;
 import com.backbase.kalah.dto.KalahResponseDTO;
 import com.backbase.kalah.enums.SuccessCodeEnum;
-import com.backbase.kalah.models.KalahBoardModel;
-import com.backbase.kalah.models.KalahPlayerModel;
+import com.backbase.kalah.models.KalahBoard;
+import com.backbase.kalah.models.KalahPlayer;
 import com.backbase.kalah.utils.KalahGameValidators;
 import com.backbase.kalah.utils.KalahConstants;
 import org.slf4j.Logger;
@@ -19,23 +19,24 @@ import org.springframework.stereotype.Service;
 public class GameService {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(GameService.class);
-  private KalahPlayerModel PLAYER_ONE;
-  private KalahPlayerModel PLAYER_TWO;
-  public static KalahBoardModel KALAH_BOARD;
+  public static KalahBoard KALAH_BOARD;
+  private KalahPlayer playerOne;
+  private KalahPlayer playerTwo;
+
 
   GameService() {
-    KALAH_BOARD = new KalahBoardModel();
-    PLAYER_ONE = new KalahPlayerModel(1);
-    PLAYER_TWO = new KalahPlayerModel(2);
+    KALAH_BOARD = new KalahBoard();
+    playerOne = new KalahPlayer(1);
+    playerTwo = new KalahPlayer(2);
   }
 
   /**
    * This method is for restarting the game
    */
   public void restartGame() {
-    KALAH_BOARD = new KalahBoardModel();
-    PLAYER_ONE = new KalahPlayerModel(1);
-    PLAYER_TWO = new KalahPlayerModel(2);
+    KALAH_BOARD = new KalahBoard();
+    playerOne = new KalahPlayer(1);
+    playerTwo = new KalahPlayer(2);
   }
 
   /**
@@ -100,7 +101,7 @@ public class GameService {
    * @param playerDTO - current player details
    * @param flag - flag to determine if stone will be added to kalah or pit
    */
-  private void addStoneToPitOrKalah(final Integer pitIndex, final KalahPlayerModel playerDTO,
+  private void addStoneToPitOrKalah(final Integer pitIndex, final KalahPlayer playerDTO,
       final boolean flag) {
     LOGGER.info("==== START addStoneToPitOrKalah ====");
     if (flag) {
@@ -122,8 +123,8 @@ public class GameService {
   private String buildWinningMessage() {
     LOGGER.info("==== START buildWinningMessage ====");
     String message = "It's a tie!";
-    Integer playerOneKalah = KALAH_BOARD.getBoard()[PLAYER_ONE.getKalah()];
-    Integer playerTwoKalah = KALAH_BOARD.getBoard()[PLAYER_TWO.getKalah()];
+    Integer playerOneKalah = KALAH_BOARD.getBoard()[playerOne.getKalah()];
+    Integer playerTwoKalah = KALAH_BOARD.getBoard()[playerTwo.getKalah()];
     if (playerOneKalah > playerTwoKalah) {
       message = String.format("Congratulations, Player %s !", KalahConstants.PLAYER_ONE);
     } else if (playerTwoKalah > playerOneKalah) {
@@ -167,7 +168,7 @@ public class GameService {
    * @param playerDTO - details of player opposite the empty pit
    * @return total number of remaining stones from opposite pits.
    */
-  private Integer emptyAndGetRemainingStonesFromOppositePits(final KalahPlayerModel playerDTO) {
+  private Integer emptyAndGetRemainingStonesFromOppositePits(final KalahPlayer playerDTO) {
     LOGGER.info("==== START emptyAndGetRemainingStonesFromOppositePits ====");
     Integer totalRemainingStones = 0;
     for (Integer index : playerDTO.getAllowedPits()) {
@@ -183,7 +184,7 @@ public class GameService {
    * @param playerDTO - player details that is currently being checked
    * @return true if empty otherwise false.
    */
-  private boolean validateIfPitsAreEmpty(final KalahPlayerModel playerDTO) {
+  private boolean validateIfPitsAreEmpty(final KalahPlayer playerDTO) {
     for (Integer index : playerDTO.getAllowedPits()) {
       if (KALAH_BOARD.getBoard()[index] > 0) {
         return false;
@@ -196,13 +197,13 @@ public class GameService {
    * This method will be called if the current player stones landed on an empty.
    * This will get the stones from the opposite pit of the player's empty pit.
    *
-   * @param kalahPlayerModel - current player details
+   * @param kalahPlayer - current player details
    * @param lastPitIndex - index of the last pit
    * @return total number of stones from opposite pit.
    */
-  private Integer getStonesFromOtherPlayersPit(final KalahPlayerModel kalahPlayerModel,
+  private Integer getStonesFromOtherPlayersPit(final KalahPlayer kalahPlayer,
       final Integer lastPitIndex) {
-    Integer pitIndex = kalahPlayerModel.getOppositePits().get(lastPitIndex);
+    Integer pitIndex = kalahPlayer.getOppositePits().get(lastPitIndex);
     Integer stones = KALAH_BOARD.getBoard()[pitIndex];
     KALAH_BOARD.getBoard()[pitIndex] = 0;
     return stones;
@@ -213,7 +214,7 @@ public class GameService {
    * @param stones - number of stones to be added.
    * @param playerDTO - owner of the kalah
    */
-  private void addStonesToPlayersKalah(final int stones, final KalahPlayerModel playerDTO) {
+  private void addStonesToPlayersKalah(final int stones, final KalahPlayer playerDTO) {
     KALAH_BOARD.getBoard()[playerDTO.getKalah()] += stones;
   }
 
@@ -234,18 +235,18 @@ public class GameService {
     }
   }
 
-  private KalahPlayerModel getCurrentPlayer(int playerId) {
+  private KalahPlayer getCurrentPlayer(int playerId) {
     if (KalahConstants.PLAYER_ONE == playerId) {
-      return PLAYER_ONE;
+      return playerOne;
     }
-    return PLAYER_TWO;
+    return playerTwo;
   }
 
-  private KalahPlayerModel getOtherPlayer(int playerId) {
+  private KalahPlayer getOtherPlayer(int playerId) {
     if (KalahConstants.PLAYER_ONE == playerId) {
-      return PLAYER_TWO;
+      return playerTwo;
     }
-    return PLAYER_ONE;
+    return playerOne;
   }
 
 
